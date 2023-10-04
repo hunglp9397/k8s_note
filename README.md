@@ -25,6 +25,13 @@
   ![2.png](img_guide/2.png)
 
 
+### 3. Ví dụ tạo Pod
+- Source code : [example_pod](/example_pod)
+- Tạo file index.js
+- Tạo file Dockerfile
+- Tạo file hello-kube.yml
+- 
+
 
 
 
