@@ -53,4 +53,42 @@ kubectl get pod
 
 #### 3.1. Ví dụ tạo ReplicationController
 - Source code : [example_replication_controller](/example_replication_controller)
-- Kiến trúc của 1 Replication Controller gồm 3 thành phần chính sau:
+  - Kiến trúc của 1 Replication Controller gồm 3 thành phần chính sau:
+    + label selector : chỉ định pod nào sẽ được RC giám sát
+    ```dockerfile
+    spec:
+      replicas: 2
+      selector:
+        app: hello-kube
+    ```
+
+  + Replica count : Số lượng pod sẽ được tạo
+    ```dockerfile
+    spec:
+    replicas: 2
+    selector:
+    app: hello-kube
+    ```
+    + Pod template : Config của pod sẽ được tạo
+    ```dockerfile
+    template:
+      metadata:
+        labels:
+          app: hello-kube
+      spec:
+        containers:
+          - image: 123497/hello-kube
+            name: hello-kube
+            ports:
+              - containerPort: 3000
+    ```
+- Tạo Replication Controller bằng lệnh: `kubectl apply -f hello-rc.yaml`
+- Kiểm tra xem đã tạo RC thành công chưa :` kubectl get rc`
+  ![3.png](img_guide/3.png)
+  - Kiểm tra tình trạng pod: ` kubectl get pod`
+    ![4.png](img_guide/4.png)
+- Khi xóa một pod thì Replication Controller sẽ tự động tạo một pod khác để đảm bảo số lượng replication = 2
+  ![5.png](img_guide/5.png)
+
+
+#### 3.2. Ví dụ sử dụng Replica Sets
