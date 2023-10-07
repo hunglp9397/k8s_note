@@ -189,3 +189,36 @@ spec:
   ![9.png](img_guide/9.png)
 - Kết quả: 
   ![11.png](img_guide/11.png)
+
+#### 4.3 LoadBalancer
+#### 4.4 Ingress resource
+
+
+
+
+### 5. Vấn đề khi upcode một ứng dụng. Deployment trong K8S
+#### 5.1 Đặt vấn đề 
+- Giả sử ứng dụng đang chạy với ReplicaSet, replicas = 3 (3 POD), Một service để expose cho client
+- Giờ cần upcode chức năng mới, ta cần update lại các Pod đang chạy với một image mới 
+- Thì sẽ có 2 cách thông dụng nhất là **Recreate** và Rolling Update
+
+#### 5.2 Recreate
+- ![12.png](img_guide/12.png)
+- Cách deploy này là: 
+  + Đầu tiên sẽ xóa toàn bộ mọi version cũ của ứng dụng, Sau đó sẽ deploy một version mới lên
+  + Còn đối với ứng dụng triển khai k8s thì đầu tiên sẽ cập nhật pod template của ReplicaSet, Sau đó xóa toàn bọ pod hiện tại, Để replicaSet tạo ra Pod với image mới
+  + -> Với cách deploy này thì quá trình deploy dễ dàng nhưng gặp một vấn đề là downtime của ứng dụng lớn, client ko thể request tới ứng dụng cho đến khi ứng dụng đc up lên
+  + -> Cách này ko ổn đối với các hệ thống ngân hàng cần request liên tục
+
+
+### 5.3 Rolling Update
+- ![13.png](img_guide/13.png)
+- Cách deploy này là: Xóa từng pod cũ, Dẫn request tới version cũ, Lặp lại quá trình này cho tới khi toàn bộ version mới của ứng dụng được deploy, và tất cả version cũ bị xóa
+- Ưu điểm của cách này : Giảm tgian downtime của ứng dụng, client sẽ mất ít tgian chờ để deploy 
+- Nhợc điểm : Ta có version mới và version cũ của một pod chạy song song, 
+
+
+### Deployment 
+- Deployment là 1 resource trong K8S cung cấp sẵn 2 cách Recreate và RollingUpdate
+- 
+
