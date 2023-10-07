@@ -122,3 +122,40 @@ spec:
 
 - So sánh ReplicaSets và ReplicationController
 - RS và RC sẽ hoạt động tương tự nhau. Nhưng RS linh hoạt hơn ở phần label selector, trong khi label selector thằng RC chỉ có thể chọn pod mà hoàn toàn giống với label nó chỉ định, thì thằng RS sẽ cho phép dùng một số expressions hoặc matching để chọn pod nó quản lý.
+
+
+### 4. Service trong k8s
+- Mỗi Service có một IP và một port không đổi, trừ khi xóa service đi và tạo lại
+- Client chỉ cần tương tác với endpoint là service
+- Service có 4 loại cơ bản là :
+  + Cluster IP
+  + Node port
+  + External name
+  + Load Balancer
+
+
+#### 4.1 Cluster IP
+- Là 1 loại service mà sẽ tạo ra một IP và một local DNS mà có thể truy cập bên trong cluster (node), ko thể truy cập ra bên ngoài, được dùng chủ yếu cho các pod trong cluster giao tiếp với nhau
+- **Source code** : [example_service/service_cluster_ip](/example_service/service_cluster_ip)
+
+
+#####  4.1.1 Build images & push docker
+- Tạo file index.js
+- Tạo file Dockerfile
+- Build images: `docker build -t 1234997/demo-redis`
+- Push lên docker hub : `docker push 1234997/demo-redis:latest`
+
+##### 4.1.2: Tạo pod redis & Service
+- Tạo file redis-service.yaml
+
+- Apply file redis-service.yaml : `kubectl apply -f redis-service.yaml`
+- Kết quả : 
+   + Pod: ![5.png](img_guide/5.png)
+   + Service : ![6.png](img_guide/6.png
+
+- Đang lôi không run đc để demo :()
+
+
+#### 4.2 NodePort:
+- Tương tự như Cluster IP là tạo endpoint để các container truy cập, ngoài ra nó sử dụng một port của toàn bộ worker node để client bên ngoài có thể truy cập vào.
+
