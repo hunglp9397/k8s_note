@@ -92,3 +92,33 @@ kubectl get pod
 
 
 #### 3.2. Ví dụ sử dụng Replica Sets
+- Replica Sets là một resource tương tự Replication Controller nhưng nó là một phiên bản mới hơn của Replication Controller
+- Tạo file ReplicaSet: hello-rs.yaml
+```dockerfile
+
+apiVersion: apps/v1
+kind: ReplicaSet 
+metadata:
+  name: hello-rs
+spec:
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: hello-kube
+  template:
+    metadata:
+      labels:
+        app: hello-kube
+    spec:
+      containers:
+      - image: 123497/hello-kube
+        name: hello-kube
+        ports:
+          - containerPort: 3000
+```
+
+- Apply file replica-set : kubectl apply -f hello-rs.yaml
+
+
+- So sánh ReplicaSets và ReplicationController
+- RS và RC sẽ hoạt động tương tự nhau. Nhưng RS linh hoạt hơn ở phần label selector, trong khi label selector thằng RC chỉ có thể chọn pod mà hoàn toàn giống với label nó chỉ định, thì thằng RS sẽ cho phép dùng một số expressions hoặc matching để chọn pod nó quản lý.
