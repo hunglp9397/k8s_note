@@ -158,4 +158,34 @@ spec:
 
 #### 4.2 NodePort:
 - Tương tự như Cluster IP là tạo endpoint để các container truy cập, ngoài ra nó sử dụng một port của toàn bộ worker node để client bên ngoài có thể truy cập vào.
+- **Source code** : [example_service/service_node_port](/example_service/service_node_port)
+- Tạo file hello-nodeport.yaml
+- Apply replicaset và service đã được cấu hình trong file vừa tạo: `kubectl apply -f hello-nodeport.yaml`
+- Kiểm tra Pod với 2 replication mà đã khai báo trong replicaset:
+````dockerfile
+kind: ReplicaSet
+metadata:
+  name: hello-rs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-kube
+````
+![7.png](img_guide/7.png)
+- Kiểm tra service: `kubectl get svc`
 
+```dockerfile
+kind: Service
+metadata:
+  name: hello
+spec:
+  selector:
+    app: hello-kube
+  type: NodePort
+```
+  ![8.png](img_guide/8.png)
+- Start service thì sẽ ánh xạ cổng 3000 của container ra cổng 32000
+  ![9.png](img_guide/9.png)
+- Kết quả: 
+  ![11.png](img_guide/11.png)
