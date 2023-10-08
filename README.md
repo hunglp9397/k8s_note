@@ -200,7 +200,7 @@ spec:
 #### 5.1 Đặt vấn đề 
 - Giả sử ứng dụng đang chạy với ReplicaSet, replicas = 3 (3 POD), Một service để expose cho client
 - Giờ cần upcode chức năng mới, ta cần update lại các Pod đang chạy với một image mới 
-- Thì sẽ có 2 cách thông dụng nhất là **Recreate** và Rolling Update
+- Thì sẽ có 2 cách thông dụng nhất là **Recreate** và **Rolling Update**
 
 #### 5.2 Recreate
 - ![12.png](img_guide/12.png)
@@ -218,7 +218,25 @@ spec:
 - Nhợc điểm : Ta có version mới và version cũ của một pod chạy song song, 
 
 
-### Deployment 
+### 6. Deployment: Giải quyết được vấn đề upcode một ứng dung
 - Deployment là 1 resource trong K8S cung cấp sẵn 2 cách Recreate và RollingUpdate
-- 
+- Tất cả đều đc thực hiện tự động bên dưới, các version deploy sẽ có history đằng sau do vậy có thể rollback hoặc rollout giữa các phiên bản mà ko cần chạy lại CI/CD
+- Luồng hoạt động cơ bản là : Deployment tạo ReplicaSet, ReplicaSet tạo Pods
+  ![14.png](img_guide/14.png)
 
+
+#### 6.1 : Ví dụ upcode đơn giản sử dụng Deployment
+- Source code : [example_deployment](/example_deployment/ex_1)
+- Deploy version1: 
+  + Tạo file index.js
+  + Tạo file Dockerfile
+  + Build images : `docker build -t 123497/hello-deployment:v1 .`
+  + Push lên Docker Hub cho ver1 : `docker push 123497/hello-deployment:v1`
+  + Tạo file deploy (Bao gồm khai báo deployment và Service): hello-deploy.yaml
+  + Apply file deploy : `kubectl apply -f hello-deployment.yaml`
+  + Kết quả deploy version 1:
+    ![16.png](img_guide/16.png)
+    ![17.png](img_guide/17.png)
+    ![18.png](img_guide/18.png)
+- Deploy version2:
+  
