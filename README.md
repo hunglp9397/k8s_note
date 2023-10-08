@@ -250,3 +250,29 @@ spec:
   + Kết quả: (chỉ cẩn refresh lại ứng dụng)
     ![21.png](img_guide/21.png)
   + Cập nhật ứng dụng thành công
+- Giải thích nguyên lý hoạt động: 
+  + Khi thay đổi image của deployment, K8S sẽ tạo ra một replicaset mới, ReplicaSet mới này sẽ có template Pod mới 
+  + ReplicaSet cũ sẽ ko bị xóa, mà thuốc tính 'replicas' của nó có giá trị bằng 0
+  + Khi muốn rollback lại version cũ thì ReplicaSet cũ sẵn sàng
+
+#### 6.1 : Rollback lại version trước khi version mới của ứng dụng bị lỗi
+- Source code : [example_deployment](/example_deployment/ex_2_rollback)
+- Giả sử deploy version3 như file index sau: Gọi request 3 lần thì trả ra lỗi
+- Deploy version 3:
+  + Build lại images với tag v3 `docker build -t 123497/hello-deployment:v3 .`
+  + Push lên hub : `docker push 123497/hello-deployment:v3`
+  + Cập nhật deployment `kubectl set image deployment hello-deployment hello-deployment=123497/hello-deployment:v3`
+  + Chạy lại service : `minikube service hello-deployment`
+  + Kết quả:
+    ![23.png](img_guide/23.png)
+  + Nếu truy cập lần thứ 3 thì app sẽ báo lỗi
+    ![22.png](img_guide/22.png)
+- Rollback lại version 2 :
+  + Đầu tiên, kiểm tra lịch sử các lần ứng dụng được cập nhật : `kubectl rollout history deploy hello-deployment`
+  + Sau đó chạy lệnh sau để rollback về ver 2 : `kubectl rollout undo deployment hello-deployment -to-revision=2`
+  + Kết quả:
+  ```bash
+   PS D:\Workspace\Learning\k8s_note\example_deployment\ex_2_rollback> kubectl rollout undo deployment hello-deployment --to-revision=2
+   deployment.apps/hello-deployment rolled back
+  ```
+  + ![24.png](img_guide/24.png)
