@@ -238,5 +238,15 @@ spec:
     ![16.png](img_guide/16.png)
     ![17.png](img_guide/17.png)
     ![18.png](img_guide/18.png)
+  + Ứng dụng chạy thành công
 - Deploy version2:
-  
+  + Sửa file index.js đổi code thành ver2:
+  + Build lại images `docker build -t 123497/hello-deployment:v2 .`
+  + ![19.png](img_guide/19.png)
+  + Update lại pod bằng cấu trúc lệnh :  kubectl set image deployment <deployment-name> <container-name>=<new-image>
+  + `kubectl set image deployment hello-deployment hello-deployment=123497/hello-deployment:v2 `
+  + Kiểm tra quá trình update đã xong chưa : `kubectl rollout status deploy hello-deployment`
+    ![20.png](img_guide/20.png)
+  + Kết quả: (chỉ cẩn refresh lại ứng dụng)
+    ![21.png](img_guide/21.png)
+  + Cập nhật ứng dụng thành công
