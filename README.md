@@ -276,3 +276,21 @@ spec:
    deployment.apps/hello-deployment rolled back
   ```
   + ![24.png](img_guide/24.png)
+
+
+### 7 : Kubernetes Volume:
+- Volume hiểu đơn giản là một mount point từ hệ thống file của server vào trong container
+- Vì data ghi vào chỉ tồn tại khi container chạy. Còn khi một Pod bị xóa, Thì container mới sẽ được tạo ra. Khi đó data ghi ở container trước sẽ bị mất đi. Vì vậy ta cần dùng volume
+- Trong K8S có các loại volume sau:
+  + emptyDir
+  + hostPath
+  + gitRepo
+  + nfs
+  + configMap, secret, downwardAPI
+  + PersistentVolumeClaim
+
+
+#### 7.1 emptyDir : share data giữa các container
+- emptyDir là loại volume đơn giản nhất, nó sẽ tạo ra một emptyDirectory bn trong các Pod
+- Các container bên trong 1 Pod có thể ghi dữ liệu vào bên trong nó
+- 
