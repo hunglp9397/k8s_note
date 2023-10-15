@@ -293,4 +293,8 @@ spec:
 #### 7.1 emptyDir : share data giữa các container
 - emptyDir là loại volume đơn giản nhất, nó sẽ tạo ra một emptyDirectory bn trong các Pod
 - Các container bên trong 1 Pod có thể ghi dữ liệu vào bên trong nó
-- 
+- Volumne emptyDir sẽ chỉ tồn tại trong vòng đời của một Pod do vậy dữ liệu sẽ bị mất đi khi Pod bị xóa
+- Lưu ý là dùng emptyDir khi chia sẻ dữ liê giữa các container 
+- Source code : [example_volume](/example_volume/emptyDir)
+- Implement emptyDir volumne:
+  + Pull image _luksa/fortune_ : `docker pull luksa/fortune`
